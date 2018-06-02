@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="UTF-8">
+        <title>GPG PIN Entry</title>
+        <link href="bootstrap.min.css" rel="stylesheet"/>
+    </head>
+    <body>
+        <div class="text-center">
+            <h1 class="display-4">GPG PIN Entry</h1>
+        </div>
+        <div class="container">
+        <form onsubmit="form_ok()">
+            <p id="description">Default</p>
+            <div id="passphraseWrapper" class="form-group">
+                <label for="passphrase">Passphrase</label>
+                <input id="passphrase" type="password" class="form-control" placeholder="Enter passphrase"/>
+            </div>
+            <div class="float-right">
+            <button id="cancel" type="button" class="btn btn-secondary" onclick="form_cancel()">Cancel</button>
+            <button id="ok" type="submit" class="btn btn-primary">OK</button>
+            </div>
+        </form>
+        </div>
+        <script>
+            const electron = require("electron");
+
+            const configuration = electron.remote.getGlobal("configuration");
+            document.getElementById("description").innerText = configuration.description;
+            document.getElementById("passphraseWrapper").style.display =
+                configuration.isConfirmation ? "none" : "block";
+            if (!configuration.isConfirmation) {
+                document.getElementById("passphrase").focus();
+            }
+
+            function form_ok() {
+                const passphrase = !configuration.isConfirmation && document.getElementById("passphrase").value;
+                electron.ipcRenderer.send('synchronous-message', 'ok', passphrase)
+            }
+
+            function form_cancel() {
+                electron.ipcRenderer.send('synchronous-message', 'cancel')
+            }
+        </script>
+    </body>
+</html>

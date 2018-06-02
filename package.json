@@ -1,0 +1,15 @@
+{
+  "name": "fooentry",
+  "version": "1.0.0",
+  "description": "A stupid gpg pinentry hack",
+  "main": "main.js",
+  "scripts": {
+    "start": "electron ."
+  },
+  "repository": "",
+  "author": "foobert",
+  "license": "MIT",
+  "devDependencies": {
+    "electron": "^2.0.0"
+  }
+}
